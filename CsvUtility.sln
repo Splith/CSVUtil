@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CsvUtility", "CsvUtility\CsvUtility.fsproj", "{71592E83-9725-47D6-9560-D2BA55EB8C1C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EAFBC510-2BE7-48B2-870D-D62772696BEC}"
+	ProjectSection(SolutionItems) = preProject
+		CsvUtility\cusid.csv = CsvUtility\cusid.csv
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{71592E83-9725-47D6-9560-D2BA55EB8C1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71592E83-9725-47D6-9560-D2BA55EB8C1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71592E83-9725-47D6-9560-D2BA55EB8C1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71592E83-9725-47D6-9560-D2BA55EB8C1C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
