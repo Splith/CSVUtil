@@ -1,0 +1,13 @@
+﻿<Window x:Class="CsvUtil.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid Margin="5,5,5,5">
+        <StackPanel>
+            <TextBox Name="FilePath" Text="{Binding Text}" Height="25" />
+            <Button Name="FilePicker" Content="Select File" Click="FilePicker_Click" Height="25" />
+            <Button Command="{Binding Path=Validate}"
+                Content="This is for moving off of stuff" Height="25" />
+        </StackPanel>
+    </Grid>
+</Window>
