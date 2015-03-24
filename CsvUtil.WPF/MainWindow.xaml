@@ -8,6 +8,15 @@
             <Button Name="FilePicker" Content="Select File" Click="FilePicker_Click" Height="25" />
             <Button Command="{Binding Path=Validate}"
                 Content="This is for moving off of stuff" Height="25" />
+
+            <ListView ItemsSource="{Binding Path=Errors}" >
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="100" Header="Item" DisplayMemberBinding="{Binding Path=Item}" ></GridViewColumn>
+                        <GridViewColumn Width="300" Header="Error Text" DisplayMemberBinding="{Binding Path=ErrorText}" ></GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </StackPanel>
     </Grid>
 </Window>

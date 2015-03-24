@@ -32,7 +32,7 @@
         type createContactTempTable = SqlCommandProvider<createTempTableString, connectionString, ResultType.Records>
         type commitContacts = SqlCommandProvider<commitContactsString, connectionString, ResultType.Records>
 
-        let AddContactFromRow (connString:string) (row:CsvUtil.Customers.CSV.Customers.Row) =
+        let AddContactFromRow (connString:string) (row:CsvUtil.CSV.Customers.CsvCust) =
             let cmd = new insertContact(connString)
             cmd.Execute((row.CustomerID.ToString()), (row.SiteID.ToString()), 0uy, row.Name, row.GeneralPhone, row.GeneralFax, row.GeneralEmail, ContactType.``{General}``, row.GeneralFirstAddr, row.GeneralSecondAddr, row.GeneralCity, row.GeneralState, row.GeneralZip) |> ignore
             cmd.Execute((row.CustomerID.ToString()), (row.SiteID.ToString()), 0uy, row.Name, row.BillingPhone, row.BillingFax, row.BillingEmail, ContactType.``{Financial}``, row.BillingFirstAddr, row.BillingSecondAddr, row.BillingCity, row.BillingState, row.BillingZip) |> ignore

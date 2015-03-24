@@ -49,11 +49,14 @@
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
+    <Compile Include="Validation.fs" />
+    <Compile Include="RailValidation.fs" />
+    <Compile Include="MasterParts.fs" />
     <Compile Include="Customers.fs" />
     <Compile Include="Contacts.fs" />
     <Compile Include="Program.fs" />
     <Compile Include="MvvmComponents.fs" />
-    <Compile Include="Library1.fs" />
+    <Compile Include="CustomerVM.fs" />
     <None Include="Script.fsx" />
     <None Include="SqlServerTypes\x86\SqlServerSpatial110.dll" />
     <None Include="SqlServerTypes\x64\SqlServerSpatial110.dll" />
