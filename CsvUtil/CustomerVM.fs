@@ -1,33 +1,11 @@
 ﻿namespace CsvUtil.MVVM
-    module ViewModel =
+    module Customer =
         // Include MVVM components
         open System.Collections.ObjectModel
         open CsvUtil.MVVM.Components 
         open CsvUtil.Customers
         open CsvUtil.RailValidation
 
-        type ValidationLevel =
-            | Suceess
-            | Warning
-            | Failure
-
-        type DisplayItem (item, errorText, errorLevel)  =
-            inherit CsvUtil.MVVM.Components.ViewModelBase()
-            let mutable _item : string = item
-            let mutable _errorText: string = errorText
-            let mutable _errorLevel : ValidationLevel = errorLevel
-
-            member x.Item
-                with get () = _item
-                and private set (value) = _item <- value
-
-            member x.ErrorText
-                with get () = _errorText
-                and private set (value) = _errorText <- value
-
-            member x.ErrorLevel
-                with get () = _errorLevel
-                and private set (value) = _errorLevel <- value
 
         type CustomerViewModel() =
             inherit CsvUtil.MVVM.Components.ViewModelBase()

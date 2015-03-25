@@ -22,3 +22,27 @@ module Components =
             member x.CanExecuteChanged = event.Publish
             member x.CanExecute arg = canExecute(arg)
             member x.Execute arg = action(arg)
+
+    
+    type ValidationLevel =
+        | Suceess
+        | Warning
+        | Failure
+
+    type DisplayItem (item, errorText, errorLevel)  =
+        inherit ViewModelBase()
+        let mutable _item : string = item
+        let mutable _errorText: string = errorText
+        let mutable _errorLevel : ValidationLevel = errorLevel
+
+        member x.Item
+            with get () = _item
+            and private set (value) = _item <- value
+
+        member x.ErrorText
+            with get () = _errorText
+            and private set (value) = _errorText <- value
+
+        member x.ErrorLevel
+            with get () = _errorLevel
+            and private set (value) = _errorLevel <- value

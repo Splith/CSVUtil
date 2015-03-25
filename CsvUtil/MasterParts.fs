@@ -11,12 +11,23 @@ namespace CsvUtil
             Height:double;
         }
 
-
-namespace CsvUtil.Csv
+namespace CsvUtil.CSV
     open FSharp.Data
     open CsvUtil.MasterParts
+    open CsvUtil.RailValidation
     module MasterParts =
         type PartList = CsvProvider<"C:\\Users\\mcgraw\\Source\\Repos\\CSVUtil\\Data\\partlist.csv">
+        let LoadPartList (path:string) =
+            try
+                let result = PartList.Load(path)
+                Success result
+            with
+                | ex -> Failure ex.Message
+
+        let FileExists (path:string) =
+            match System.IO.File.Exists(path) with
+                | false -> Failure (sprintf "File not found at path: %s" path)
+                | true -> Success "Connection to file established"
 
         let CsvToMasterPart (record:PartList.Row) =
             let mp : MasterPart = {
@@ -28,7 +39,7 @@ namespace CsvUtil.Csv
             }
             mp
 
-namespace Csvutil.SQL
+namespace CsvUtil.SQL
     module MasterParts =
         open FSharp.Data
         open FSharp.Data.SqlClient
@@ -50,8 +61,8 @@ namespace Csvutil.SQL
 
         [<Literal>]
         let commitPartTempTableSql = @"
-            INSERT INTO MasterPartList (MasterPartNo, Description, Ordered)
-            SELECT MasterPartNo, Description, Ordered
+            INSERT INTO MasterPartList (MasterPartNo, PartNoSuffix, Description, Ordered)
+            SELECT MasterPartNo, '0000', Description, Ordered
             FROM xMasterParts
             DROP TABLE xMasterParts"
 
@@ -70,11 +81,24 @@ namespace Csvutil.SQL
         type InsertPartCommand = SqlCommandProvider<insertPartSql, connectionString, ResultType.Records>
 
         [<Literal>]
-        let getExistingPartNumbers = @"
+        let getExistingPartNumbersSql = @"
             SELECT MasterPartNo
             FROM MasterPartList"
 
-        type GetExistingPartNumbersCommand = SqlCommandProvider<getExistingPartNumbers, connectionString, ResultType.Records>
+        type GetExistingPartNumbersCommand = SqlCommandProvider<getExistingPartNumbersSql, connectionString, ResultType.Records>
+
+        [<Literal>]
+        let testConnectionSql = @"
+            SELECT 1"
+        type TestConnectionCommand = SqlCommandProvider<testConnectionSql,connectionString>
+
+        let TestConnection (connString:string) =
+            try
+                let cmd = new TestConnectionCommand(connString)
+                cmd.Execute() |> ignore
+                Success "Connection Established"
+            with
+                | ex -> Failure (sprintf "Connection Failed:%s" ex.Message)
 
         let AddPart (connString:string) (part:MasterPart) =
             try

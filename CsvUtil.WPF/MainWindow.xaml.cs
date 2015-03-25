@@ -30,7 +30,7 @@ namespace CsvUtil.WPF
 
         void MainWindow_Initialized(object sender, EventArgs e)
         {
-            this.DataContext = new CsvUtil.MVVM.ViewModel.MainWindowViewModel();
+            this.DataContext = new CsvUtil.MVVM.MasterParts.PartsViewModel();
         }
 
         private void FilePicker_Click(object sender, RoutedEventArgs e)

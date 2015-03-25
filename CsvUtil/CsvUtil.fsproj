@@ -57,6 +57,7 @@
     <Compile Include="Program.fs" />
     <Compile Include="MvvmComponents.fs" />
     <Compile Include="CustomerVM.fs" />
+    <Compile Include="PartsVM.fs" />
     <None Include="Script.fsx" />
     <None Include="SqlServerTypes\x86\SqlServerSpatial110.dll" />
     <None Include="SqlServerTypes\x64\SqlServerSpatial110.dll" />
