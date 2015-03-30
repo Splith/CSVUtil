@@ -1,6 +1,20 @@
 ﻿
+namespace CsvUtil
+    open CsvUtil.RailValidation
+    module Validation =
+        let NoTrimSpace (partNo:string) =
+            match partNo.Trim().Length = partNo.Length with
+                | true -> Success partNo
+                | false -> Failure (sprintf "PartNo: %s has leading or trailing white space" partNo)
+
+        let PartLength n (partNo:string) =
+            match  partNo.Length with
+                | l when l <= n -> Success partNo
+                | l -> Failure (sprintf "PartNo: %s has a length of %i, Maximum is : 35" partNo l)
 
 namespace CsvUtil
+    open CsvUtil.Validation
+    open CsvUtil.RailValidation
     module MasterParts =
         // Business Objects
         type MasterPart = {
@@ -10,6 +24,10 @@ namespace CsvUtil
             Width:double;
             Height:double;
         }
+
+        let ValidPartNo (partNo:string) =
+            let combinedVal = NoTrimSpace >> Bind (PartLength 35)
+            combinedVal partNo
 
 namespace CsvUtil.CSV
     open FSharp.Data
@@ -48,7 +66,7 @@ namespace CsvUtil.SQL
 
         //Literal connection string
         [<Literal>]
-        let connectionString = @"Data Source=localhost\sqlexpress;Initial Catalog=FVMaster_Data;Integrated Security=True"
+        let connectionString = @"Data Source=localhost\sqlexpress;Initial Catalog=FVMaster_Data;Integrated Security=True;Connect Timeout=3;"
 
         // Create temp table
         [<Literal>]

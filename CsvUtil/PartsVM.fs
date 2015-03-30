@@ -47,8 +47,35 @@
 
             member x.ParseFile connString filePath = 
                 match CSV.MasterParts.LoadPartList filePath with
-                    | Success s -> x.Execute connString (Seq.map CSV.MasterParts.CsvToMasterPart s.Rows)
+                    | Success s -> 
+                        let masterParts = Seq.map CSV.MasterParts.CsvToMasterPart s.Rows
+                        let partNos = Seq.map (fun (i:MasterParts.MasterPart) -> i.PartNo) masterParts
+                        
+                        match x.ValidateParts partNos with
+                            | Success r -> x.Execute connString masterParts
+                            | Failure f -> x.Errors.Add(DisplayItem("Failed Part Validation", f, ValidationLevel.Failure))
                     | Failure f -> x.Errors.Add(DisplayItem("CSV Load Failed", f, ValidationLevel.Failure))
+
+            member x.ValidateParts parts =
+                let partValResults = 
+                    Seq.map (fun t -> 
+                        match MasterParts.ValidPartNo t with
+                            | Success s -> Success s
+                            | Failure f -> Failure (t, f))
+                        parts 
+                    |> Seq.filter (fun i ->
+                        ResultToBoolean i |> not)
+                match Seq.length partValResults with
+                    | 0 -> Success parts
+                    | _ ->
+                        for u in partValResults do
+                            match u with
+                                | Failure f -> 
+                                    let part = fst f
+                                    let error = snd f
+                                    x.Errors.Add(DisplayItem((sprintf "PartNo: %s" part),error,ValidationLevel.Failure))
+                                | Success s -> () // We should never get here
+                        Failure "Part Validation Failed"
 
             member x.Execute connString masterParts =
                 // curry down some functions to make the last step look pretty
@@ -72,7 +99,7 @@
                 match addParts masterParts with
                     | Success s -> 
                         match SQL.MasterParts.CommitPartTempTable connString with
-                            | Success s -> x.Errors.Clear()
+                            | Success s -> x.Errors.Add(DisplayItem("Insert Complete", "MasterPart Insert Routine Finished!", ValidationLevel.Suceess))
                             | Failure f -> x.Errors.Add(DisplayItem("Committ Error", f, ValidationLevel.Failure))
                     | Failure f -> 
                         SQL.MasterParts.RollbackPartTempTable connString |> ignore

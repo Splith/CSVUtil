@@ -21,7 +21,6 @@ namespace CsvUtil
 
         // Helper functions
         let CompareCustomerSiteIDs (a:CustomerSiteID) (b:CustomerSiteID) =
-            //a.CustomerID = b.CustomerID && a.SiteID = b.SiteID
             a = b
 
         let GetMatchingSites (custIds:CustomerSiteID[]) (targetIds:CustomerSiteID) =
@@ -31,11 +30,6 @@ namespace CsvUtil
             let regex = new System.Text.RegularExpressions.Regex(@"^\W*1?\W*([2-9][0-8][0-9])\W*([2-9][0-9]{2})\W*([0-9]{4})(\se?x?t?(\d*))?\W*$")
             regex.IsMatch(phoneNumber) || System.String.IsNullOrWhiteSpace(phoneNumber)
 
-        // Public functions
-        let MatchingInSet comparitor elements target =
-            match elements |> Seq.map comparitor |> Seq.filter (fun t -> t) |> (fun x -> Seq.length x)  with
-                | 0 -> CsvUtil.RailValidation.Success target
-                | _ -> CsvUtil.RailValidation.Failure "More than one elements exists in collection"
         
 namespace CsvUtil.CSV
     open FSharp.Data

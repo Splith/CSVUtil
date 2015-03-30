@@ -13,3 +13,8 @@ module RailValidation =
     let (>>=) twoTrackInput switchFunction =
         Bind switchFunction twoTrackInput
 
+
+    let ResultToBoolean res =
+        match res with
+            | Success s -> true
+            | Failure f -> false
