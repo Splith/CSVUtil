@@ -3,27 +3,69 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
     <Grid Margin="5,5,5,5">
-        <StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Conn String:" Width="75"/>
-                <TextBox Name="ConnString" Text="{Binding ConnString}" Width="350" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Label Content="CSV Path:" Width="75" />
-                <TextBox Name="FilePath" Text="{Binding Text}" Height="25" Width="350" />
-                <Button Name="FilePicker" Content="..." Click="FilePicker_Click" Height="25" Width="25" />
-            </StackPanel>
-            <Button Command="{Binding Path=Validate}"
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Expander Header="Connection String">
+                    <Expander.Style>
+                        <Style TargetType="Expander">
+                            <Setter Property="BorderBrush" Value="Red"></Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=ValidText}"
+                                         Value="true">
+                                    <Setter Property="BorderBrush" Value="Green"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Expander.Style>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="5">
+                        <Label Content="Server Name:" Width="100" HorizontalAlignment="Left"/>
+                        <TextBox Name="Server" Text="{Binding ConnString}" Width="350" />
+                        <RadioButton Name="WinAuth" Content="Use Windows Authentication (Good)" GroupName="auth" />
+                        <RadioButton Name="SqlAuth" Content="Use Sql Authentication (Bad)" GroupName="auth" />
+                        <StackPanel Margin="20,0,0,0" Orientation="Vertical">
+                            <Label Content="User Name:" Width="100" HorizontalAlignment="Left"/>
+                            <TextBox Name="UserName" IsEnabled="{Binding Path=IsChecked, ElementName=SqlAuth}" Text="{Binding ConnString}" Width="330" />
+                            <Label Content="Password:" Width="100" HorizontalAlignment="Left"/>
+                            <TextBox Name="Password" IsEnabled="{Binding Path=IsChecked, ElementName=SqlAuth}" Text="{Binding ConnString}" Width="330" />
+                        </StackPanel>
+                        <Label Content="Database:" Width="100" HorizontalAlignment="Left" Height="25"/>
+                        <TextBox Name="Database" Text="{Binding ConnString}" Width="350" />
+                    </StackPanel>
+                </Expander>
+                <Expander Header="File Path">
+                    <Expander.Style>
+                        <Style TargetType="Expander">
+                            <Setter Property="BorderBrush" Value="Red"></Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=ValidText}"
+                                         Value="true">
+                                    <Setter Property="BorderBrush" Value="Green"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Expander.Style>
+                    <StackPanel Orientation="Vertical" Margin="5">
+                        <Label Content="CSV Path:" Width="75" HorizontalAlignment="Left" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Name="FilePath" Text="{Binding Text}" Height="25" Width="350" HorizontalAlignment="Left" />
+                            <Button Name="FilePicker" Content="..." Click="FilePicker_Click" Height="25" Width="25" />
+                        </StackPanel>
+
+                    </StackPanel>
+                </Expander>
+
+                <Button Command="{Binding Path=Validate}"
                 Content="Validate" Height="25" />
 
-            <ListView ItemsSource="{Binding Path=Errors}" >
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Width="100" Header="Item" DisplayMemberBinding="{Binding Path=Item}" ></GridViewColumn>
-                        <GridViewColumn Width="300" Header="Error Text" DisplayMemberBinding="{Binding Path=ErrorText}" ></GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </StackPanel>
+                <ListView ItemsSource="{Binding Path=Errors}" >
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="100" Header="Item" DisplayMemberBinding="{Binding Path=Item}" ></GridViewColumn>
+                            <GridViewColumn Width="300" Header="Error Text" DisplayMemberBinding="{Binding Path=ErrorText}" ></GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Window>

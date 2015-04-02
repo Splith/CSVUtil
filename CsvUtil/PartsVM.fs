@@ -11,13 +11,25 @@
             let mutable _text : string = System.String.Empty
             let mutable _connString : string = System.String.Empty
             let mutable _errors : ObservableCollection<DisplayItem> = new ObservableCollection<DisplayItem>()
+            let mutable _validText : bool = false
 
             member x.Text
                 with get() = _text
                 and set(value:string) =
                     _text <- value
+                    if System.IO.File.Exists(x.Text) then
+                        x.ValidText <- true
+                    else
+                        x.ValidText <- false
                     x.NotifyPropertyChanged("Text")
                     x.NotifyPropertyChanged("Validate")
+
+            member x.ValidText
+                with get() = _validText
+                and set(valid:bool) =
+                    if _validText <> valid then
+                        _validText <- valid
+                        x.NotifyPropertyChanged("ValidText")
 
             member x.ConnString
                 with get() = _connString
